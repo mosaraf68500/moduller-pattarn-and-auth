@@ -1,9 +1,10 @@
 import express, { Request, Response } from "express"
 import { pool } from "../../config/db";
+import { userControllers } from "./user.controller";
 const router=express.Router();
 
 
-router.post("/", );
+router.post("/",userControllers.createUsers );
 
 
 

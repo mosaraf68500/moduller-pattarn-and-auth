@@ -22,3 +22,8 @@ const createUsers= async (req: Request, res: Response) => {
     });
   }
 }
+
+
+export const userControllers={
+    createUsers
+}
