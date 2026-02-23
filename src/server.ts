@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import config from "./config";
 import initBD, { pool } from "./config/db";
 import logger from "./middleware/logger";
+import { userRoutes } from "./modules/user/user.routes";
 const app = express();
 
 const port=config.port;
@@ -15,43 +16,10 @@ app.get("/", logger, (req: Request, res: Response) => {
 });
 
 // users crud
-app.post("/users", async (req: Request, res: Response) => {
-  const { name, email } = req.body;
 
-  try {
-    const result = await pool.query(
-      `INSERT INTO users(name,email) VALUES($1,$2) RETURNING *`,
-      [name, email],
-    );
-    console.log(result.rows[0]);
-    res.status(201).json({
-      success: true,
-      message: "data inserted successfully!",
-      data: result.rows[0],
-    });
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-});
+app.use("/users",userRoutes)
 
-app.get("/users", async (req: Request, res: Response) => {
-  try {
-    const result = await pool.query(`SELECT * FROM users`);
-    res.status(200).json({
-      success: true,
-      message: "data fetching successfully!",
-      data: result.rows,
-    });
-  } catch (err: any) {
-    res.status(500).json({
-      success: false,
-      message: err.message,
-    });
-  }
-});
+
 
 app.get("/users/:id", async (req: Request, res: Response) => {
   try {
